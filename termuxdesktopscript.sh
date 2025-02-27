@@ -1,44 +1,51 @@
+#!/usr/bin/env bash
 # Desktop script for termux x11
 
 read response
+print_welcome_text() {
 
-echo "Before we start the install process, we need some prequisities, using pkg, we are instaslling, x11-repo termux-x11-nightly tur-repo pluseaudio proot-distro wget git."
+    echo "Welcome to the termux desktop installation guide by @MajesticTwelve12!"
 
-echo "Do do you want to install these packages? (y/n)"
+    echo "Before we start the install process, we need some prequisities, using pkg, we are instaslling, x11-repo termux-x11-nightly tur-repo pluseaudio proot-distro wget git."
+}
 
-if ["$response" = 'y']; then
 
+install_termux_packages() {
     pkg update
     pkg install x11-repo termux-x11-nightly tur-repo pluseaudio proot-distro wget git
-else
-    echo "Not installing packages, quitting..."
-    return 1
-fi
-quit
 
-echo "Installing Debian with proot-distro..."
-proot-distro install debian
-echo "Logging into debian as root inside the container."
+}
 
-proot-distro login debian
-# inside the proot-distro
-echo "adding user droidmaster, this will be key for installing the xfce4 desktop script."
-adduser droidmaster
-echo "Make a user password for droidmaster"
-passwd droidmaster
-## add users to the sudoers file /etc/sudoers/
+setup_proot_system() {
+    echo "Installing Debian with proot-distro..."
+    proot-distro install debian
 
-## nano /etc/sudoers
-## droidmaster ALL=(ALL:ALL) ALL
-# check to see if sudo is working properly.
-sudo whoami
-exit
-shellscript="startxfce4_debian.sh"
-# Installing the desktop
-proot-distro login debian --user droidmaster
-echo "Would you like to install xfce4 as your main desktop environment?"
-echo "Do do you want to install these packages? (y/n)"
-if ["$response" = 'y']; then
+}
+
+setup_proot_users() {
+
+    echo "Logging into debian as root inside the container."
+    proot-distro login debian
+    # inside the proot-distro
+    echo "adding droidmasteras user, this will be key for installing the xfce4 desktop script."
+    adduser droidmaster
+    echo "Make a user password for droidmaster"
+    passwd droidmaster
+    ## add users to the sudoers file /etc/sudoers/
+
+    ## nano /etc/sudoers
+    ## droidmaster ALL=(ALL:ALL) ALL
+    # check to see if sudo is working properly.
+    sudo whoami
+}
+logging_in_as_xfce4_user() {
+
+    proot-distro login debian --user droidmaster
+}
+
+
+xfce4_desktop_installation() {
+    shellscript = "startxfce4_debian.sh"
     sudo apt -y install xfce4
     wget https://raw.githubusercontent.com/LinuxDroidMaster/Termux-Desktops/main/scripts/proot_debian/startxfce4_debian.sh
 
@@ -46,21 +53,70 @@ if ["$response" = 'y']; then
     echo "Making $shellscript executable (chmod u+x $shellscript)"
     chmod u+x startxfce4_debian.sh
 
-else
-    echo "Not installing XFCE4, quitting..."
-    return 1
-fi
+}
 
-
-#Echo to the screen, it is done, enjoy and run the script.
-
-echo="You are now done! You can run the script now for debian xfce4 edition! ./startxfce4_debian.sh! would you like to run it? (y/n)"
-
-
+executing_proot_debian_script() {
 if ["$response" = 'y']; then
     ./startxfce4_debian.sh
     else
     echo "Thanks for running the script! quitting"
-    return 1
+
 fi
-quit
+}
+
+if ["$response" = 'y']; then
+    install_termux_packages()
+
+    else
+    echo "Not installing packages, quitting..."
+
+fi
+Installation_Menu() {
+
+    echo 'Choose what to do: '
+    echo '1 - Install required packages for XFCE4'
+    echo '2 - Install required packages for XFCE4 and proot Debian System'
+    echo '3 - Logging into Debian Proot as root and setting up users, user is droidmaster'
+
+}
+msg() {
+    tput setaf 2
+    echo "[*] $1"
+    tput sgr0
+}
+
+
+error_msg() {
+    tput setaf 1
+    echo "[!] $1"
+    tput sgr0
+}
+
+main() {
+
+    while true; do
+        print_welcome_text
+        Installation_Menu
+        read -p 'Would you like to continue running this script?: ' choice
+        case $choice in
+        1)
+        install_termux_packages
+        msg 'Done!'
+        ;;
+        2)
+        setup_proot_system
+        msg 'Done!'
+        ;;
+        3)
+        setup_proot_users
+        msg 'Done!'
+        ;;
+        *)
+        error_msg 'Please use a valid input'
+        ;;
+        esac
+    done
+}
+
+(return 2> /dev/null) || main
+
