@@ -64,13 +64,6 @@ if ["$response" = 'y']; then
 fi
 }
 
-if ["$response" = 'y']; then
-    install_termux_packages()
-
-    else
-    echo "Not installing packages, quitting..."
-
-fi
 Installation_Menu() {
 
     echo 'Choose what to do: '
@@ -119,4 +112,3 @@ main() {
 }
 
 (return 2> /dev/null) || main
-
