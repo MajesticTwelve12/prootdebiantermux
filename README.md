@@ -1,4 +1,4 @@
-# prootdebiantermux Proot Debian Installation Script - Work In Progress. DO NOT USE
+# Proot Debian Installation Script - Work In Progress. DO NOT USE
 
 This script is based off of DroidMaster's proot installation guide, but in a script.
 https://github.com/LinuxDroidMaster/Termux-Desktops/blob/main/Documentation/proot/debian_proot.md
