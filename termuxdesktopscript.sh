@@ -13,7 +13,7 @@ if ["$response" = 'y']; then
 else
     echo "Not installing packages, quitting..."
     return 1
-if
+fi
 quit
 
 echo "Installing Debian with proot-distro..."
@@ -33,25 +33,23 @@ passwd droidmaster
 # check to see if sudo is working properly.
 sudo whoami
 exit
-
+shellscript="startxfce4_debian.sh"
 # Installing the desktop
 proot-distro login debian --user droidmaster
 echo "Would you like to install xfce4 as your main desktop environment?"
 echo "Do do you want to install these packages? (y/n)"
 if ["$response" = 'y']; then
+    sudo apt -y install xfce4
+    wget https://raw.githubusercontent.com/LinuxDroidMaster/Termux-Desktops/main/scripts/proot_debian/startxfce4_debian.sh
 
-sudo apt -y install xfce4
-
-wget https://raw.githubusercontent.com/LinuxDroidMaster/Termux-Desktops/main/scripts/proot_debian/startxfce4_debian.sh
-
-#Make the script executable
-
-chmod u+x startxfce4_debian.sh
+    #Make the script executable
+    echo "Making $shellscript executable (chmod u+x $shellscript)"
+    chmod u+x startxfce4_debian.sh
 
 else
     echo "Not installing XFCE4, quitting..."
     return 1
-if
+fi
 
 
 #Echo to the screen, it is done, enjoy and run the script.
@@ -66,4 +64,3 @@ if ["$response" = 'y']; then
     return 1
 fi
 quit
-return 0;
