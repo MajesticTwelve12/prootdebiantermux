@@ -43,7 +43,6 @@ logging_in_as_xfce4_user() {
     proot-distro login debian --user droidmaster
 }
 
-
 xfce4_desktop_installation() {
     shellscript = "startxfce4_debian.sh"
     sudo apt -y install xfce4
