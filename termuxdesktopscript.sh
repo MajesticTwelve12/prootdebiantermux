@@ -12,7 +12,10 @@ print_welcome_text() {
 
 install_termux_packages() {
     pkg update
-    pkg install x11-repo termux-x11-nightly tur-repo pluseaudio proot-distro wget git
+    pkg install x11-repo
+    pkg install termux-x11-nightly
+    pkg install pulseaudio
+    pkg install tur-repo proot-distro wget git
 
 }
 
@@ -102,6 +105,9 @@ main() {
         3)
         setup_proot_users
         msg 'Done!'
+        ;;
+        q)
+        exit 0
         ;;
         *)
         error_msg 'Please use a valid input'
