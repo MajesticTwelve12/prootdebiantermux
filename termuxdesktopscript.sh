@@ -11,11 +11,11 @@ print_welcome_text() {
 
 
 install_termux_packages() {
-    pkg update
-    pkg install x11-repo
-    pkg install termux-x11-nightly
-    pkg install pulseaudio
-    pkg install tur-repo proot-distro wget git
+    pkg update -y
+    pkg install -y x11-repo
+    pkg install -y termux-x11-nightly
+    pkg install -y pulseaudio
+    pkg install -y tur-repo proot-distro wget git
 
 }
 
@@ -95,23 +95,23 @@ main() {
         read -p 'Would you like to continue running this script?: ' choice
         case $choice in
         1)
-        install_termux_packages
-        msg 'Done!'
-        ;;
+            install_termux_packages
+            msg 'Done!'
+            ;;
         2)
-        setup_proot_system
-        msg 'Done!'
-        ;;
+            setup_proot_system
+            msg 'Done!'
+            ;;
         3)
-        setup_proot_users
-        msg 'Done!'
-        ;;
+            setup_proot_users
+            msg 'Done!'
+            ;;
         q)
-        exit 0
-        ;;
+            exit 0
+            ;;
         *)
-        error_msg 'Please use a valid input'
-        ;;
+            error_msg 'Please use a valid input'
+            ;;
         esac
     done
 }
