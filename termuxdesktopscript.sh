@@ -15,7 +15,7 @@ install_termux_packages() {
     pkg install -y x11-repo
     pkg install -y termux-x11-nightly
     pkg install -y pulseaudio
-    pkg install -y tur-repo proot-distro wget git
+    pkg install -y tur-repo proot-distro wget git coreutils
 
 }
 

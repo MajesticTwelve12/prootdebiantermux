@@ -5,6 +5,14 @@ read response
 print_welcome_text() {
     echo 'Welcome to the second part of the Termux desktop installation guide by @MajesticTwelve12!'
 }
+# Need to install sudo so this script will continue to run.
+
+debian_system_requirements() {
+    echo 'Installing the reletive packages so that the script can run properly.'
+    apt update -y && apt upgrade -y
+    apt install sudo man vim git wget curl gcc
+
+}
 
 # Make a script that checks if the user is in the proot system
 setup_proot_users() {
@@ -12,11 +20,11 @@ setup_proot_users() {
     echo 'adding droidmasteras user, this will be key for installing the xfce4 desktop script.'
     adduser droidmaster
     echo 'Make a user password for droidmaster'
-    passwd droidmaster
     ## add users to the sudoers file /etc/sudoers/
-    ## Write to the line where the line root or sudoers is in the placement of the sudoers file. so that it is clean for users who wish to view the file at a later date
-    ## nano /etc/sudoers
-    ## droidmaster ALL=(ALL:ALL) ALL
+   # Using sed this will work out just fine
+    echo 'adding user to sudoers file'
+    sed -i '48i droidmaster ALL=ALL(ALL:ALL) ALL' /etc/sudoers
+
     # check to see if sudo is working properly.
     sudo whoami
 }
@@ -30,14 +38,15 @@ xfce4_desktop_goodies() {
     sudo apt install -y xfce4-whiskermenu-plugin
     sudo apt install -y mugshot
     sudo apt install -y conky-all
+
 }
 xfce4-desktop-themes() {
     sudo apt install -y papirus-icon-theme moka-icon-theme
     sudo apt install -y numix-gtk-theme greybird-gtk-theme
 }
-desktop_developer_applications() {
+desktop_developer_tools() {
    # For users who want to install development tools like GCC, Clang or Rust 
-
+    apt -y install gcc make gcc-c++ rustc 
 }
 xfce4_script_user_executable() {
 
@@ -83,7 +92,7 @@ main() {
         read -p 'Would you like to continue running this script?: ' choice
         case $choice in
         1)
-            install_termux_packages
+            debian_system_requirements
             msg 'Done!'
             ;;
         2)
@@ -92,6 +101,16 @@ main() {
             ;;
         3)
             setup_proot_users
+            msg 'Done!'
+            ;;
+
+        4)
+            xfce4_desktop_installation
+            msg 'Done!'
+            ;;
+
+        5)
+            desktop_developer_tools
             msg 'Done!'
             ;;
         q)
